@@ -1,14 +1,14 @@
 $ErrorActionPreference = 'Stop'
 
 $packageName = 'editorlint'
-$version = '1.3.9'
+$version = '0.3.0'
 $toolsDir = "$(Split-Path -Parent $MyInvocation.MyCommand.Definition)"
 
 $packageArgs = @{
   PackageName   = $packageName
   UnzipLocation = $toolsDir
-  Url64bit      = "https://github.com/dobbo-ca/editorlint/releases/download/$version/editorlint_v${version}_windows_amd64.zip"
-  Checksum64    = 'PLACEHOLDER_WINDOWS_AMD64_SHA256'
+  Url64bit      = "https://github.com/editorlint/editorlint/releases/download/$version/editorlint_v${version}_windows_amd64.zip"
+  Checksum64    = '69d49a19b60e212d5fa3e219368d32c396c0c93efde1edb19258efb3f91225f8'
   ChecksumType64= 'sha256'
 }
 

@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>editorlint</id>
-    <version>1.3.9</version>
-    <packageSourceUrl>https://github.com/dobbo-ca/chocolatey-packages/tree/main/editorlint</packageSourceUrl>
+    <version>0.3.0</version>
+    <packageSourceUrl>https://github.com/editorlint/chocolatey-packages/tree/main/editorlint</packageSourceUrl>
     <owners>dobbo-ca</owners>
     <title>EditorLint</title>
     <authors>Chris Dobbyn</authors>
-    <projectUrl>https://github.com/dobbo-ca/editorlint</projectUrl>
-    <docsUrl>https://github.com/dobbo-ca/editorlint#readme</docsUrl>
-    <bugTrackerUrl>https://github.com/dobbo-ca/editorlint/issues</bugTrackerUrl>
+    <projectUrl>https://github.com/editorlint/editorlint</projectUrl>
+    <docsUrl>https://github.com/editorlint/editorlint#readme</docsUrl>
+    <bugTrackerUrl>https://github.com/editorlint/editorlint/issues</bugTrackerUrl>
     <tags>editorconfig linter formatter development</tags>
     <summary>A fast EditorConfig checker and auto-fixer</summary>
     <description><![CDATA[
@@ -42,11 +42,11 @@ editorlint file1.txt file2.js
 editorlint --fix .
 ```
 
-For more information, visit the [project homepage](https://github.com/dobbo-ca/editorlint).
+For more information, visit the [project homepage](https://github.com/editorlint/editorlint).
 ]]></description>
-    <releaseNotes>https://github.com/dobbo-ca/editorlint/releases/tag/1.3.9</releaseNotes>
+    <releaseNotes>https://github.com/editorlint/editorlint/releases/tag/0.3.0</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://github.com/dobbo-ca/editorlint/blob/main/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/editorlint/editorlint/blob/main/LICENSE</licenseUrl>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
