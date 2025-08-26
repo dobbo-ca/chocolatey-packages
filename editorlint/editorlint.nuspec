@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>editorlint</id>
+    <version>1.3.9</version>
+    <packageSourceUrl>https://github.com/dobbo-ca/chocolatey-packages/tree/main/editorlint</packageSourceUrl>
+    <owners>dobbo-ca</owners>
+    <title>EditorLint</title>
+    <authors>Chris Dobbyn</authors>
+    <projectUrl>https://github.com/dobbo-ca/editorlint</projectUrl>
+    <docsUrl>https://github.com/dobbo-ca/editorlint#readme</docsUrl>
+    <bugTrackerUrl>https://github.com/dobbo-ca/editorlint/issues</bugTrackerUrl>
+    <tags>editorconfig linter formatter development</tags>
+    <summary>A fast EditorConfig checker and auto-fixer</summary>
+    <description><![CDATA[
+EditorLint is a lightning-fast EditorConfig checker and auto-fixer written in Go.
+
+## Features
+
+- **Lightning Fast**: Written in Go for maximum performance
+- **EditorConfig Support**: Full support for EditorConfig specification
+- **Auto-Fix**: Automatically fix common formatting issues
+- **Multiple Formats**: Support for various file types
+- **Cross-Platform**: Works on Windows, macOS, and Linux
+
+## Usage
+
+```
+editorlint [flags] [files...]
+```
+
+### Examples
+
+```
+# Check all files in current directory
+editorlint .
+
+# Check specific files
+editorlint file1.txt file2.js
+
+# Auto-fix issues
+editorlint --fix .
+```
+
+For more information, visit the [project homepage](https://github.com/dobbo-ca/editorlint).
+]]></description>
+    <releaseNotes>https://github.com/dobbo-ca/editorlint/releases/tag/1.3.9</releaseNotes>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/dobbo-ca/editorlint/blob/main/LICENSE</licenseUrl>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+    <file src="legal\**" target="legal" />
+  </files>
+</package>

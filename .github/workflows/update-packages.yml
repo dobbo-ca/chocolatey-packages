@@ -1,0 +1,69 @@
+name: Update Packages
+
+on:
+  repository_dispatch:
+    types: [update_editorlint]
+
+jobs:
+  update-editorlint:
+    if: github.event.action == 'update_editorlint'
+    runs-on: windows-latest
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.AUTOMATIONS_APP_ID }}
+          private-key: ${{ secrets.AUTOMATIONS_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+      
+      - name: Update editorlint package
+        run: |
+          $VERSION = "${{ github.event.client_payload.version }}"
+          $WINDOWS_AMD64_SHA256 = "${{ github.event.client_payload.windows_amd64_sha256 }}"
+          
+          Write-Host "Updating editorlint package to version: $VERSION"
+          Write-Host "Windows AMD64 SHA256: $WINDOWS_AMD64_SHA256"
+          
+          # Update version in nuspec file
+          $nuspecPath = "editorlint/editorlint.nuspec"
+          $nuspecContent = Get-Content $nuspecPath -Raw
+          $nuspecContent = $nuspecContent -replace '<version>.*</version>', "<version>$VERSION</version>"
+          $nuspecContent = $nuspecContent -replace 'releases/tag/[0-9.]*', "releases/tag/$VERSION"
+          Set-Content $nuspecPath $nuspecContent
+          
+          # Update chocolateyinstall.ps1
+          $installPath = "editorlint/tools/chocolateyinstall.ps1"
+          $installContent = Get-Content $installPath -Raw
+          $installContent = $installContent -replace '\$version = ''.*''', "`$version = '$VERSION'"
+          $installContent = $installContent -replace 'download/[0-9.]*/editorlint_v[0-9.]*_windows_amd64\.zip', "download/$VERSION/editorlint_v${VERSION}_windows_amd64.zip"
+          $installContent = $installContent -replace 'PLACEHOLDER_WINDOWS_AMD64_SHA256', $WINDOWS_AMD64_SHA256
+          Set-Content $installPath $installContent
+          
+          # Update VERIFICATION.txt
+          $verificationPath = "editorlint/legal/VERIFICATION.txt"
+          $verificationContent = Get-Content $verificationPath -Raw
+          $verificationContent = $verificationContent -replace 'download/[0-9.]*/editorlint_v[0-9.]*_windows_amd64\.zip', "download/$VERSION/editorlint_v${VERSION}_windows_amd64.zip"
+          $verificationContent = $verificationContent -replace 'PLACEHOLDER_WINDOWS_AMD64_SHA256', $WINDOWS_AMD64_SHA256
+          Set-Content $verificationPath $verificationContent
+          
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          $changes = git diff --name-only
+          if (-not $changes) {
+            Write-Host "No changes to package files"
+            exit 0
+          }
+          
+          git add editorlint/
+          git commit -m "chore: update editorlint to ${{ github.event.client_payload.version }}"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
