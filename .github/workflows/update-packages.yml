@@ -25,21 +25,26 @@ jobs:
         run: |
           $VERSION = "${{ github.event.client_payload.version }}"
           $WINDOWS_AMD64_SHA256 = "${{ github.event.client_payload.windows_amd64_sha256 }}"
+          $ORGANIZATION = "${{ github.repository_owner }}"
           
           Write-Host "Updating editorlint package to version: $VERSION"
+          Write-Host "Organization: $ORGANIZATION"
           Write-Host "Windows AMD64 SHA256: $WINDOWS_AMD64_SHA256"
           
-          # Update version in nuspec file
+          # Update version and URLs in nuspec file
           $nuspecPath = "editorlint/editorlint.nuspec"
           $nuspecContent = Get-Content $nuspecPath -Raw
           $nuspecContent = $nuspecContent -replace '<version>.*</version>', "<version>$VERSION</version>"
           $nuspecContent = $nuspecContent -replace 'releases/tag/[0-9.]*', "releases/tag/$VERSION"
+          $nuspecContent = $nuspecContent -replace 'https://github.com/[^/]*/editorlint', "https://github.com/$ORGANIZATION/editorlint"
+          $nuspecContent = $nuspecContent -replace 'https://github.com/[^/]*/chocolatey-packages', "https://github.com/$ORGANIZATION/chocolatey-packages"
           Set-Content $nuspecPath $nuspecContent
           
           # Update chocolateyinstall.ps1
           $installPath = "editorlint/tools/chocolateyinstall.ps1"
           $installContent = Get-Content $installPath -Raw
           $installContent = $installContent -replace '\$version = ''.*''', "`$version = '$VERSION'"
+          $installContent = $installContent -replace 'https://github.com/[^/]*/editorlint/', "https://github.com/$ORGANIZATION/editorlint/"
           $installContent = $installContent -replace 'download/[0-9.]*/editorlint_v[0-9.]*_windows_amd64\.zip', "download/$VERSION/editorlint_v${VERSION}_windows_amd64.zip"
           $installContent = $installContent -replace 'PLACEHOLDER_WINDOWS_AMD64_SHA256', $WINDOWS_AMD64_SHA256
           Set-Content $installPath $installContent
@@ -47,6 +52,7 @@ jobs:
           # Update VERIFICATION.txt
           $verificationPath = "editorlint/legal/VERIFICATION.txt"
           $verificationContent = Get-Content $verificationPath -Raw
+          $verificationContent = $verificationContent -replace 'https://github.com/[^/]*/editorlint/', "https://github.com/$ORGANIZATION/editorlint/"
           $verificationContent = $verificationContent -replace 'download/[0-9.]*/editorlint_v[0-9.]*_windows_amd64\.zip', "download/$VERSION/editorlint_v${VERSION}_windows_amd64.zip"
           $verificationContent = $verificationContent -replace 'PLACEHOLDER_WINDOWS_AMD64_SHA256', $WINDOWS_AMD64_SHA256
           Set-Content $verificationPath $verificationContent
